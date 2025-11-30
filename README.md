@@ -7,6 +7,8 @@
 [![Tests](https://img.shields.io/badge/tests-19%20passing-brightgreen.svg)](tests/)
 [![AI](https://img.shields.io/badge/AI-Groq-orange.svg)](https://groq.com/)
 
+<img width="1201" height="692" alt="image" src="https://github.com/user-attachments/assets/9d44c6e5-dc49-46ac-86b8-a383fc84e28f" />
+
 ## 🎯 About This Project
 
 A production-ready test automation framework that uses **AI to solve real QA problems**:
