@@ -11,7 +11,7 @@
 
 ## 🎯 About This Project
 
-A production-ready test automation framework that uses **AI to solve real QA problems**:
+A test automation framework that uses **AI to solve real QA problems**:
 - **AI generates selectors** from natural language (no more brittle XPath)
 - **AI creates test data** automatically (realistic, unique every time)
 - **AI analyzes failures** and suggests fixes
