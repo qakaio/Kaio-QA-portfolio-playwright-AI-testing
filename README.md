@@ -90,24 +90,6 @@ except:
     page.click(alternatives[0])  # Automatic recovery
 ```
 
-### 5. Visual Validation
-```python
-from helpers.visual_validator import VisualValidator
-
-validator = VisualValidator()
-accessibility = validator.analyze_page_accessibility(page)
-# Returns: {'accessibility_score': 85, 'issues': [...], 'total_issues': 3}
-```
-
-### 6. Smart Wait Strategies
-```python
-from helpers.smart_waits import SmartWaits
-
-smart_waits = SmartWaits()
-smart_waits.wait_for_element_intelligently(page, 'Form to load')
-# AI determines optimal wait strategy
-```
-
 ---
 
 ## 📁 Project Structure
