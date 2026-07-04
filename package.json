@@ -1,0 +1,46 @@
+{
+  "name": "kaio-qa-portfolio-playwright-ai-testing",
+  "version": "1.0.0",
+  "description": "AI-powered Playwright test automation framework using Groq AI for selector generation, test data creation, failure analysis, visual validation, and self-healing tests.",
+  "author": "Kaio Garcia <kaioqa@protonmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qakaio/Kaio-QA-portfolio-playwright-AI-testing.git"
+  },
+  "homepage": "https://github.com/qakaio/Kaio-QA-portfolio-playwright-AI-testing",
+  "bugs": {
+    "url": "https://github.com/qakaio/Kaio-QA-portfolio-playwright-AI-testing/issues"
+  },
+  "keywords": [
+    "playwright",
+    "ai-testing",
+    "groq",
+    "llm",
+    "test-automation",
+    "self-healing",
+    "ai-selectors",
+    "pytest"
+  ],
+  "scripts": {
+    "test": "pytest -v",
+    "test:headed": "pytest --headed",
+    "test:ai": "pytest tests/test_ai_features_showcase.py -v -s",
+    "test:login": "pytest tests/test_saucedemo_login.py -v -s",
+    "test:shopping": "pytest tests/test_saucedemo_shopping.py -v -s",
+    "test:failure": "pytest tests/test_example.py::TestExampleSuite::test_intentional_failure_for_ai_analysis -v -s",
+    "install:browsers": "playwright install chromium",
+    "lint": "ruff check .",
+    "lint:fix": "ruff check . --fix"
+  },
+  "devDependencies": {},
+  "engines": {
+    "python": ">=3.11.0"
+  },
+  "dependencies": {
+    "playwright": "^1.48.0",
+    "pytest": "^9.0.0",
+    "groq": "^0.4.0",
+    "python-dotenv": "^1.0.0"
+  }
+}
