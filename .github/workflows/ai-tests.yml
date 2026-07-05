@@ -47,16 +47,34 @@ jobs:
       - name: Install Playwright browsers
         run: playwright install --with-deps chromium
 
+      - name: Check for GROQ_API_KEY
+        id: check_key
+        run: |
+          if [ -z "${{ secrets.GROQ_API_KEY }}" ]; then
+            echo "GROQ_API_KEY not set, skipping AI tests"
+            echo "has_key=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_key=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Configure environment
+        if: steps.check_key.outputs.has_key == 'true'
         run: |
           cp .env.example .env
           echo "GROQ_API_KEY=${{ secrets.GROQ_API_KEY }}" >> .env
           echo "GROQ_MODEL=llama-3.3-70b-versatile" >> .env
 
       - name: Run AI Playwright tests
+        if: steps.check_key.outputs.has_key == 'true'
         run: pytest -v --tb=short
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+
+      - name: Skip AI tests (no API key)
+        if: steps.check_key.outputs.has_key == 'false'
+        run: |
+          echo "⚠️ GROQ_API_KEY not configured in repository secrets. Skipping AI tests."
+          echo "To enable: Add GROQ_API_KEY to repository secrets (Settings > Secrets > Actions)"
 
       - name: Upload test results
         if: always()
