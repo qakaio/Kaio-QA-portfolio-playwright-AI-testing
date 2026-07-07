@@ -1,5 +1,9 @@
 # 🤖 AI-Powered Playwright Test Automation Framework
 
+![AI Tests](https://github.com/qakaio/Kaio-QA-portfolio-playwright-AI-testing/actions/workflows/ai-tests.yml/badge.svg)
+
+# 🤖 AI-Powered Playwright Test Automation Framework
+
 > **Next-generation test automation** leveraging **Groq AI (llama-3.3-70b-versatile)** for intelligent testing capabilities.
 
 Built by [Kaio Garcia](https://github.com/qakaio) — QA Engineer
