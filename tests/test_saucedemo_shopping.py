@@ -31,6 +31,7 @@ class TestSauceDemoShopping:
         page.click('[data-test="add-to-cart-sauce-labs-bike-light"]')
         expect(cart_badge).to_have_text('2')
 
+    @pytest.mark.requires_groq
     def test_complete_checkout_with_ai_generated_data(self, page: Page):
         """Complete checkout flow with AI-generated test data"""
         data_gen = TestDataGenerator()
@@ -96,6 +97,7 @@ class TestSauceDemoShopping:
 
         print(f'\n✅ Found {len(initial_products)} products on inventory page')
 
+    @pytest.mark.requires_groq
     def test_product_details_navigation(self, page: Page):
         """Test navigation to product details"""
         selector_gen = SelectorGenerator()
