@@ -1,5 +1,6 @@
 import pytest
-from playwright.sync_api import Page, expect
+import os
+from playwright.sync_api import Page
 from helpers.selector_generator import SelectorGenerator
 from helpers.test_data_generator import TestDataGenerator
 from helpers.visual_validator import VisualValidator
@@ -11,8 +12,14 @@ class TestAIFeaturesShowcase:
 
     BASE_URL = 'https://www.saucedemo.com'
 
+    def _skip_if_no_groq(self):
+        """Skip test if GROQ_API_KEY is not set"""
+        if not os.getenv("GROQ_API_KEY"):
+            pytest.skip("GROQ_API_KEY not set - skipping AI-powered test")
+
     def test_ai_selector_generation_showcase(self, page: Page):
         """Demonstrate AI selector generation capabilities"""
+        self._skip_if_no_groq()
         selector_gen = SelectorGenerator()
         page.goto(self.BASE_URL)
 
@@ -33,9 +40,9 @@ class TestAIFeaturesShowcase:
 
         print('='*60 + '\n')
 
-    @pytest.mark.requires_groq
     def test_ai_test_data_generation_showcase(self, page: Page):
         """Demonstrate AI test data generation"""
+        self._skip_if_no_groq()
         data_gen = TestDataGenerator()
 
         print('\n' + '='*60)
@@ -58,9 +65,9 @@ class TestAIFeaturesShowcase:
 
         print('='*60 + '\n')
 
-    @pytest.mark.requires_groq
     def test_ai_visual_validation_showcase(self, page: Page):
         """Demonstrate AI visual validation"""
+        self._skip_if_no_groq()
         validator = VisualValidator()
         page.goto(self.BASE_URL)
 
@@ -90,9 +97,9 @@ class TestAIFeaturesShowcase:
 
         print('='*60 + '\n')
 
-    @pytest.mark.requires_groq
     def test_ai_smart_waits_showcase(self, page: Page):
         """Demonstrate AI-powered smart wait strategies"""
+        self._skip_if_no_groq()
         smart_waits = SmartWaits()
 
         print('\n' + '='*60)
@@ -117,9 +124,9 @@ class TestAIFeaturesShowcase:
 
         print('='*60 + '\n')
 
-    @pytest.mark.requires_groq
     def test_ai_failure_recovery_showcase(self, page: Page):
         """Demonstrate AI-powered failure recovery"""
+        self._skip_if_no_groq()
         selector_gen = SelectorGenerator()
         page.goto(self.BASE_URL)
 
