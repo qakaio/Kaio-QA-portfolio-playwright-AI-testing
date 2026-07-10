@@ -39,11 +39,17 @@ jobs:
           pip install -r requirements.txt
           playwright install ${{ matrix.project }}
 
+      - name: Start Xvfb
+        run: |
+          sudo Xvfb :99 -screen 0 1920x1080x24 &
+          sleep 3
+
       - name: Run AI Playwright Tests (headless)
         run: pytest --browser=${{ matrix.project }} --reruns=2 -x
         env:
           CI: true
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          DISPLAY: :99
           PLAYWRIGHT_BROWSERS_PATH: /home/runner/.cache/ms-playwright
 
       - name: Upload HTML Report
