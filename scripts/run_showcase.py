@@ -5,7 +5,6 @@ Runs all tests and generates a comprehensive report
 """
 
 import subprocess
-import sys
 from datetime import datetime
 
 

@@ -96,7 +96,7 @@ Return ONLY the JSON, no explanation.
             response_clean = response_clean.strip()
             
             return json.loads(response_clean)
-        except:
+        except Exception:
             return {
                 'username': f'{user_type}_user_test',
                 'password': 'Test123!',
