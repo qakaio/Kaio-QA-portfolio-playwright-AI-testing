@@ -20,7 +20,8 @@
     "test-automation",
     "self-healing",
     "ai-selectors",
-    "pytest"
+    "pytest",
+    "allure-report"
   ],
   "scripts": {
     "test": "pytest -v",
@@ -29,6 +30,9 @@
     "test:login": "pytest tests/test_saucedemo_login.py -v -s",
     "test:shopping": "pytest tests/test_saucedemo_shopping.py -v -s",
     "test:failure": "pytest tests/test_example.py::TestExampleSuite::test_intentional_failure_for_ai_analysis -v -s",
+    "test:allure": "pytest -v --alluredir=allure-results --clean-alluredir",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report",
     "install:browsers": "playwright install chromium",
     "lint": "ruff check .",
     "lint:fix": "ruff check . --fix"
@@ -41,6 +45,7 @@
     "playwright": "^1.48.0",
     "pytest": "^9.0.0",
     "groq": "^0.4.0",
-    "python-dotenv": "^1.0.0"
+    "python-dotenv": "^1.0.0",
+    "allure-pytest": "^2.13.2"
   }
 }
