@@ -40,7 +40,7 @@ class TestSauceDemoLogin:
             'SauceDemo login page'
         )
         
-        print(f'\n🤖 AI Generated Selectors:')
+        print('\n🤖 AI Generated Selectors:')
         print(f'  Username: {username_selector}')
         print(f'  Password: {password_selector}')
         print(f'  Login Button: {login_btn_selector}')
