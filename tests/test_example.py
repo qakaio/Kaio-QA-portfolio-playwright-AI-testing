@@ -13,6 +13,7 @@ class TestExampleSuite:
         title = page.title()
         assert 'Playwright' in title
 
+    @pytest.mark.requires_groq
     def test_ai_powered_selector_generation(self, page: Page):
         """AI-powered selector generation example"""
         selector_gen = SelectorGenerator()
@@ -49,6 +50,7 @@ class TestExampleSuite:
         # Remove @pytest.mark.skip to see the AI analysis in action
         expect(page.locator('[data-testid="non-existent"]')).to_be_visible()
 
+    @pytest.mark.requires_groq
     def test_successful_search_functionality(self, page: Page):
         """Test search functionality with AI-generated selectors"""
         selector_gen = SelectorGenerator()
