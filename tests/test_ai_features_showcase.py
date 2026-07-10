@@ -1,4 +1,3 @@
-import pytest
 from playwright.sync_api import Page, expect
 from helpers.selector_generator import SelectorGenerator
 from helpers.test_data_generator import TestDataGenerator
