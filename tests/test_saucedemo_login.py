@@ -1,7 +1,6 @@
 import pytest
 from playwright.sync_api import Page, expect
 from helpers.selector_generator import SelectorGenerator
-from helpers.visual_validator import VisualValidator
 
 
 class TestSauceDemoLogin:
