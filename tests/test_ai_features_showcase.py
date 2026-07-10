@@ -1,4 +1,4 @@
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 from helpers.selector_generator import SelectorGenerator
 from helpers.test_data_generator import TestDataGenerator
 from helpers.visual_validator import VisualValidator
