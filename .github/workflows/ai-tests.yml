@@ -40,7 +40,7 @@ jobs:
           playwright install ${{ matrix.project }}
 
       - name: Run AI Playwright Tests
-        run: pytest --browser=${{ matrix.project }} --retries=2 --trace=on-first-retry
+        run: pytest --browser=${{ matrix.project }} --retries=2
         env:
           CI: true
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
