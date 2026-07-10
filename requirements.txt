@@ -4,4 +4,3 @@ playwright
 groq
 python-dotenv
 allure-pytest
-pytest-allure
