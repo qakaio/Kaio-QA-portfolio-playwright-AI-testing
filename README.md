@@ -1,8 +1,8 @@
 # 🤖 AI-Powered Playwright Test Automation Framework
 
 ![AI Tests](https://github.com/qakaio/Kaio-QA-portfolio-playwright-AI-testing/actions/workflows/ai-tests.yml/badge.svg)
-
-# 🤖 AI-Powered Playwright Test Automation Framework
+![Allure Report](https://img.shields.io/badge/Allure-Report-brightgreen?logo=allure)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 > **Next-generation test automation** leveraging **Groq AI (llama-3.3-70b-versatile)** for intelligent testing capabilities.
 
@@ -19,6 +19,7 @@ Built by [Kaio Garcia](https://github.com/qakaio) — QA Engineer
 | **Language** | Python 3.11+ |
 | **Framework** | Playwright 1.48 + Pytest 9.0 |
 | **AI Provider** | Groq (llama-3.3-70b-versatile) |
+| **Reports** | HTML + **Allure Report** |
 
 ---
 
@@ -43,6 +44,7 @@ Built by [Kaio Garcia](https://github.com/qakaio) — QA Engineer
 | **Test Framework** | Pytest 9.0 |
 | **AI Provider** | Groq (llama-3.3-70b-versatile) |
 | **AI Features** | Selector Gen, Data Gen, Failure Analysis, Visual Validation, Self-Healing |
+| **Reports** | HTML + **Allure Report** |
 
 ---
 
@@ -401,7 +403,7 @@ MIT License — Educational and portfolio purposes.
 
 ## 👤 Author
 
-**Kaio Garcia** — QA Engineer
+**Kaio Garcia** — QA Engineer  
 🔗 [GitHub](https://github.com/qakaio) • [LinkedIn](https://linkedin.com/in/kaioqa) • [Portfolio](https://qakaio.github.io)
 
 ---
@@ -412,3 +414,9 @@ MIT License — Educational and portfolio purposes.
 - [Playwright](https://playwright.dev/) for modern browser automation
 - [Pytest](https://docs.pytest.org/) for the best testing framework
 - [SauceDemo](https://www.saucedemo.com/) for the demo e-commerce site
+
+---
+
+## 📊 Allure Report
+
+**Live Allure Report**: [https://qakaio.github.io/Kaio-QA-portfolio-playwright-AI-testing/allure-report/](https://qakaio.github.io/Kaio-QA-portfolio-playwright-AI-testing/allure-report/)
