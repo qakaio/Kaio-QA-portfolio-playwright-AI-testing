@@ -1,4 +1,5 @@
-from playwright.sync_api import Page
+import pytest
+from playwright.sync_api import Page, expect
 from helpers.selector_generator import SelectorGenerator
 from helpers.test_data_generator import TestDataGenerator
 from helpers.visual_validator import VisualValidator
@@ -32,6 +33,7 @@ class TestAIFeaturesShowcase:
 
         print('='*60 + '\n')
 
+    @pytest.mark.requires_groq
     def test_ai_test_data_generation_showcase(self, page: Page):
         """Demonstrate AI test data generation"""
         data_gen = TestDataGenerator()
@@ -56,6 +58,7 @@ class TestAIFeaturesShowcase:
 
         print('='*60 + '\n')
 
+    @pytest.mark.requires_groq
     def test_ai_visual_validation_showcase(self, page: Page):
         """Demonstrate AI visual validation"""
         validator = VisualValidator()
@@ -87,6 +90,7 @@ class TestAIFeaturesShowcase:
 
         print('='*60 + '\n')
 
+    @pytest.mark.requires_groq
     def test_ai_smart_waits_showcase(self, page: Page):
         """Demonstrate AI-powered smart wait strategies"""
         smart_waits = SmartWaits()
@@ -113,6 +117,7 @@ class TestAIFeaturesShowcase:
 
         print('='*60 + '\n')
 
+    @pytest.mark.requires_groq
     def test_ai_failure_recovery_showcase(self, page: Page):
         """Demonstrate AI-powered failure recovery"""
         selector_gen = SelectorGenerator()

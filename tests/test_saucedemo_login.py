@@ -21,6 +21,7 @@ class TestSauceDemoLogin:
         expect(page).to_have_url(f'{self.BASE_URL}/inventory.html')
         expect(page.locator('.inventory_list')).to_be_visible()
 
+    @pytest.mark.requires_groq
     def test_ai_generated_login_selectors(self, page: Page):
         """Demonstrate AI selector generation for login elements"""
         selector_gen = SelectorGenerator()
