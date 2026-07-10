@@ -49,7 +49,7 @@ class TestAIFeaturesShowcase:
         
         # Generate user credentials
         user_creds = data_gen.generate_user_credentials('premium')
-        print(f'\n  Premium User Credentials:')
+        print('\n  Premium User Credentials:')
         print(f'    Username: {user_creds["username"]}')
         print(f'    Password: {user_creds["password"]}')
         print(f'    Email: {user_creds["email"]}')
