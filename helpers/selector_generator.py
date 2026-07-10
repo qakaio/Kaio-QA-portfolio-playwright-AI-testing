@@ -75,5 +75,5 @@ Example format: ["selector1", "selector2", "selector3"]"""
         try:
             import json
             return json.loads(response)
-        except:
+        except Exception:
             return [failed_selector]
