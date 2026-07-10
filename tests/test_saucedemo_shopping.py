@@ -45,7 +45,7 @@ class TestSauceDemoShopping:
         # Generate realistic test data using AI
         checkout_data = data_gen.generate_checkout_data()
         
-        print(f'\n🤖 AI Generated Test Data:')
+        print('\n🤖 AI Generated Test Data:')
         print(f'  First Name: {checkout_data["firstName"]}')
         print(f'  Last Name: {checkout_data["lastName"]}')
         print(f'  Postal Code: {checkout_data["postalCode"]}')
