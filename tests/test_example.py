@@ -68,7 +68,7 @@ class TestExampleSuite:
             search_btn = page.locator(search_selector).first
             expect(search_btn).to_be_visible(timeout=3000)
             print('✅ AI-generated search selector worked!')
-        except:
+        except Exception:
             # Fallback to known selector
             search_btn = page.locator('button[aria-label*="Search"], .DocSearch').first
             expect(search_btn).to_be_visible()
