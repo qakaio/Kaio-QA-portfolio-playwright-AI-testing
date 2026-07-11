@@ -113,6 +113,17 @@ jobs:
           name: allure-results
           path: allure-results/
 
+      - name: Generate Environment Properties
+        run: |
+          cat > allure-results/environment.properties << 'EOF'
+          framework=Playwright + AI (Groq/GPT)
+          language=Python
+          browser=Chromium
+          os=Ubuntu
+          project=Kaio-QA-portfolio-playwright-AI-testing
+          repo=https://github.com/qakaio/Kaio-QA-portfolio-playwright-AI-testing
+          EOF
+
       - name: Generate Allure Report
         if: always()
         run: |
