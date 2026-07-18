@@ -37,7 +37,7 @@ jobs:
           sleep 3
 
       - name: Run AI Playwright Tests (headless)
-        run: pytest --browser=chromium --reruns=2 -x
+        run: pytest --browser=chromium --reruns=2
         env:
           CI: true
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
@@ -71,41 +71,13 @@ jobs:
   allure:
     name: Generate Allure Report
     needs: test
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: 'pip'
-
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          pip install pytest-rerunfailures
-          playwright install --with-deps chromium
-
-      - name: Start Xvfb
-        run: |
-          sudo Xvfb :99 -screen 0 1920x1080x24 &
-          sleep 3
-
-      - name: Run AI Playwright Tests for Allure
-        run: pytest --browser=chromium --reruns=2 -x
-        env:
-          CI: true
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          DISPLAY: :99
-          PLAYWRIGHT_BROWSERS_PATH: /home/runner/.cache/ms-playwright
-
-      - name: Install Allure
-        run: npm install -g allure-commandline
 
       - name: Download Allure Results
         uses: actions/download-artifact@v4
