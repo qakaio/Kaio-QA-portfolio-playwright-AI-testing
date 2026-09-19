@@ -1,0 +1,16 @@
+[tool.mypy]
+python_version = "3.11"
+files = ["."]
+warn_unused_configs = true
+warn_return_any = true
+no_implicit_optional = true
+check_untyped_defs = true
+ignore_missing_imports = true
+exclude = [
+    ".venv",
+    ".pytest_cache",
+    "allure-results",
+    "allure-report",
+    "test-results",
+    "node_modules",
+]

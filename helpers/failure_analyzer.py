@@ -1,6 +1,8 @@
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
+
 from helpers.ai_client import AIClient
 
 
@@ -8,7 +10,11 @@ class FailureAnalyzer:
     """AI-powered test failure analyzer"""
 
     def __init__(self):
-        self.ai_client = AIClient()
+        self.ai_client: AIClient | None
+        try:
+            self.ai_client = AIClient()
+        except RuntimeError:
+            self.ai_client = None
 
     def analyze_failure(self, test_result: dict) -> dict:
         """
@@ -49,6 +55,19 @@ Format as JSON:
 
         system_prompt = 'You are an expert QA engineer analyzing test failures. Provide actionable insights.'
 
+        if self.ai_client is None:
+            return {
+                'test': title,
+                'status': status,
+                'timestamp': datetime.now(timezone.utc).isoformat(),
+                'analysis': {
+                    'rootCause': 'Analysis unavailable because GROQ_API_KEY is not configured.',
+                    'solutions': ['Set GROQ_API_KEY and rerun the test to enable AI failure analysis.'],
+                    'prevention': ['Keep the credential in a local .env file and do not commit it.'],
+                },
+                'error': error_message,
+            }
+
         try:
             response = self.ai_client.query(
                 prompt,
@@ -59,12 +78,9 @@ Format as JSON:
 
             # Try to parse JSON, handle markdown code blocks
             response_clean = response.strip()
-            if response_clean.startswith('```json'):
-                response_clean = response_clean[7:]
-            if response_clean.startswith('```'):
-                response_clean = response_clean[3:]
-            if response_clean.endswith('```'):
-                response_clean = response_clean[:-3]
+            response_clean = response_clean.removeprefix('```json')
+            response_clean = response_clean.removeprefix('```')
+            response_clean = response_clean.removesuffix('```')
             response_clean = response_clean.strip()
 
             try:
@@ -80,22 +96,22 @@ Format as JSON:
             return {
                 'test': title,
                 'status': status,
-                'timestamp': datetime.now().isoformat(),
+                'timestamp': datetime.now(timezone.utc).isoformat(),
                 'analysis': analysis,
-                'error': error_message
+                'error': error_message,
             }
-        except Exception as err:
-            print(f'Analysis failed: {str(err)}')
+        except (AttributeError, KeyError, TypeError, ValueError, RuntimeError) as err:
+            print(f'Analysis failed: {err!s}')
             return {
                 'test': title,
                 'status': status,
-                'timestamp': datetime.now().isoformat(),
+                'timestamp': datetime.now(timezone.utc).isoformat(),
                 'analysis': {
                     'rootCause': 'Analysis unavailable',
                     'solutions': [],
-                    'prevention': []
+                    'prevention': [],
                 },
-                'error': error_message
+                'error': error_message,
             }
 
     def generate_report(self, failures: list) -> str:
@@ -111,9 +127,9 @@ Format as JSON:
         analyses = [self.analyze_failure(failure) for failure in failures]
 
         report = {
-            'generatedAt': datetime.now().isoformat(),
+            'generatedAt': datetime.now(timezone.utc).isoformat(),
             'totalFailures': len(failures),
-            'failures': analyses
+            'failures': analyses,
         }
 
         # Create test-results directory
@@ -121,7 +137,7 @@ Format as JSON:
         results_dir.mkdir(exist_ok=True)
 
         # Save JSON report
-        timestamp = int(datetime.now().timestamp() * 1000)
+        timestamp = int(datetime.now(timezone.utc).timestamp() * 1000)
         report_path = results_dir / f'ai-failure-report-{timestamp}.json'
 
         with open(report_path, 'w') as f:

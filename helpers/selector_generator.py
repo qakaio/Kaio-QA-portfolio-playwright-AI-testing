@@ -45,11 +45,11 @@ Selector:"""
     def suggest_alternatives(self, failed_selector: str, error_message: str) -> list[str]:
         """
         Suggest alternative selectors if the primary one fails
-        
+
         Args:
             failed_selector: The selector that failed
             error_message: Error message from the failure
-            
+
         Returns:
             List of alternative selectors
         """
@@ -64,16 +64,19 @@ Return them as a JSON array of strings, nothing else.
 Example format: ["selector1", "selector2", "selector3"]"""
 
         system_prompt = 'You are an expert in debugging web automation selectors. Provide practical alternatives.'
-        
+
         response = self.ai_client.query(
             prompt,
             system_prompt=system_prompt,
             temperature=0.5,
             max_tokens=200
         )
-        
+
         try:
             import json
-            return json.loads(response)
-        except Exception:
+            parsed = json.loads(response)
+            if isinstance(parsed, list) and parsed:
+                return [str(item) for item in parsed[:3]]
+            return [failed_selector]
+        except (TypeError, ValueError, json.JSONDecodeError):
             return [failed_selector]

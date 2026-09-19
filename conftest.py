@@ -1,5 +1,6 @@
-import pytest
 import os
+
+import pytest
 from helpers.failure_analyzer import FailureAnalyzer
 
 
@@ -16,6 +17,10 @@ def pytest_runtest_makereport(item, call):
 
     # Only analyze failures in the call phase (not setup/teardown)
     if report.when == 'call' and report.failed:
+        if not os.getenv('GROQ_API_KEY'):
+            print('GROQ_API_KEY not set; skipping AI failure analysis.')
+            return
+
         analyzer = FailureAnalyzer()
 
         failure_data = {
@@ -32,8 +37,8 @@ def pytest_runtest_makereport(item, call):
             print('\n🤖 AI Failure Analysis:')
             print(f"Root Cause: {analysis['analysis']['rootCause']}")
             print(f"Solutions: {', '.join(analysis['analysis']['solutions'])}")
-        except Exception as e:
-            print(f'Failed to analyze test failure: {str(e)}')
+        except (AttributeError, KeyError, RuntimeError, TypeError, ValueError) as exc:
+            print(f'Failed to analyze test failure: {exc!s}')
 
 
 def pytest_collection_modifyitems(config, items):

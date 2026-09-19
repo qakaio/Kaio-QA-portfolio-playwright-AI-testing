@@ -1,4 +1,5 @@
 from playwright.sync_api import Page
+
 from helpers.ai_client import AIClient
 
 
@@ -35,23 +36,23 @@ Return ONLY the strategy name and a brief reason in JSON format:
                 prompt,
                 system_prompt='You are a test automation expert. Return only JSON.',
                 temperature=0.3,
-                max_tokens=100
+                max_tokens=100,
             )
-            
+
             # Parse response
             import json
+
             response_clean = response.strip()
             if '```' in response_clean:
                 response_clean = response_clean.split('```')[1]
-                if response_clean.startswith('json'):
-                    response_clean = response_clean[4:]
+                response_clean = response_clean.removeprefix('json')
             response_clean = response_clean.strip()
-            
+
             strategy_data = json.loads(response_clean)
             strategy = strategy_data.get('strategy', 'wait_for_load_state')
-            
+
             print(f'🤖 AI Wait Strategy: {strategy} - {strategy_data.get("reason", "")}')
-            
+
             # Apply strategy
             if strategy == 'wait_for_load_state':
                 page.wait_for_load_state('networkidle', timeout=timeout)
@@ -59,9 +60,8 @@ Return ONLY the strategy name and a brief reason in JSON format:
                 page.wait_for_url('**', timeout=timeout)
             else:
                 page.wait_for_load_state('domcontentloaded', timeout=timeout)
-                
-        except Exception as e:
-            print(f'AI wait strategy failed: {e}, using default')
+        except (json.JSONDecodeError, RuntimeError, TypeError, ValueError) as exc:
+            print(f'AI wait strategy failed: {exc}, using default')
             page.wait_for_load_state('domcontentloaded', timeout=timeout)
     
     def suggest_optimal_timeout(self, action_type: str) -> int:

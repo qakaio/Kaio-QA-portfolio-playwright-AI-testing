@@ -1,10 +1,14 @@
 import json
+from typing import Any, cast
+
 from helpers.ai_client import AIClient
 
 
 class TestDataGenerator:
-    """AI-powered test data generator"""
-    
+    """AI-powered test data generator."""
+
+    __test__ = False
+
     def __init__(self):
         self.ai_client = AIClient()
     
@@ -35,29 +39,24 @@ Generate different data each time. Return ONLY the JSON, no explanation.
                 prompt,
                 system_prompt=system_prompt,
                 temperature=0.8,
-                max_tokens=100
+                max_tokens=100,
             )
-            
+
             # Clean response
             response_clean = response.strip()
-            if response_clean.startswith('```json'):
-                response_clean = response_clean[7:]
-            if response_clean.startswith('```'):
-                response_clean = response_clean[3:]
-            if response_clean.endswith('```'):
-                response_clean = response_clean[:-3]
+            response_clean = response_clean.removeprefix('```json')
+            response_clean = response_clean.removeprefix('```')
+            response_clean = response_clean.removesuffix('```')
             response_clean = response_clean.strip()
-            
-            data = json.loads(response_clean)
-            
+
+            data = cast(dict[str, Any], json.loads(response_clean))
+
             # Validate required fields
             if all(key in data for key in ['firstName', 'lastName', 'postalCode']):
-                return data
-            else:
-                return self._get_fallback_data()
-                
-        except Exception as e:
-            print(f'AI data generation failed: {e}, using fallback')
+                return cast(dict[str, str], data)
+            return self._get_fallback_data()
+        except (TypeError, ValueError, json.JSONDecodeError, RuntimeError) as exc:
+            print(f'AI data generation failed: {exc}, using fallback')
             return self._get_fallback_data()
     
     def generate_user_credentials(self, user_type: str = 'standard') -> dict:
@@ -85,22 +84,22 @@ Return ONLY the JSON, no explanation.
                 prompt,
                 system_prompt='You are a test data generator. Return only valid JSON.',
                 temperature=0.7,
-                max_tokens=150
+                max_tokens=150,
             )
-            
+
             response_clean = response.strip()
             if '```' in response_clean:
                 response_clean = response_clean.split('```')[1]
-                if response_clean.startswith('json'):
-                    response_clean = response_clean[4:]
+                response_clean = response_clean.removeprefix('json')
             response_clean = response_clean.strip()
-            
-            return json.loads(response_clean)
-        except Exception:
+
+            data = cast(dict[str, Any], json.loads(response_clean))
+            return cast(dict[str, str], data)
+        except (TypeError, ValueError, json.JSONDecodeError, RuntimeError):
             return {
                 'username': f'{user_type}_user_test',
                 'password': 'Test123!',
-                'email': f'{user_type}@test.com'
+                'email': f'{user_type}@test.com',
             }
     
     def _get_fallback_data(self) -> dict:

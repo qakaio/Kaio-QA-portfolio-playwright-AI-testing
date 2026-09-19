@@ -1,4 +1,5 @@
 from playwright.sync_api import Page
+
 from helpers.ai_client import AIClient
 
 
@@ -80,19 +81,32 @@ class VisualValidator:
     
     def compare_screenshots(self, screenshot1_path: str, screenshot2_path: str) -> dict:
         """
-        Compare two screenshots and identify differences
-        
+        Compare two screenshots and identify differences using a deterministic,
+        file-based heuristic for this lab implementation.
+
         Args:
             screenshot1_path: Path to first screenshot
             screenshot2_path: Path to second screenshot
-            
+
         Returns:
             Comparison results
         """
-        # This is a placeholder for visual regression testing
-        # In a real implementation, you'd use image comparison libraries
-        return {
-            'identical': False,
-            'difference_percentage': 0.0,
-            'differences_found': []
-        }
+        import os
+
+        try:
+            size_a = os.path.getsize(screenshot1_path)
+            size_b = os.path.getsize(screenshot2_path)
+            identical = size_a == size_b
+            difference_percentage = 0.0 if identical else round(abs(size_a - size_b) / max(size_a, size_b, 1) * 100, 2)
+
+            return {
+                'identical': identical,
+                'difference_percentage': difference_percentage,
+                'differences_found': [] if identical else ['File size differs between screenshots']
+            }
+        except FileNotFoundError:
+            return {
+                'identical': False,
+                'difference_percentage': 100.0,
+                'differences_found': ['One or both screenshots are missing']
+            }

@@ -8,18 +8,45 @@
 
 Built by [Kaio Garcia](https://github.com/qakaio) — QA Engineer
 
+## 60-second start
+
+- Purpose: AI-assisted Playwright demos for selector generation, data generation, and failure analysis.
+- Prerequisites: Python 3.11+, a Groq API key, and a local Playwright browser install.
+- Install: `python -m venv .venv`, `python -m pip install -r requirements.txt`, `python -m playwright install chromium`, and copy `.env.example` to `.env`.
+- One test command: `python -m pytest tests/test_ai_features_showcase.py -q` when `GROQ_API_KEY` is set.
+- Expected result: AI showcase tests run or skip cleanly with a clear reason when credentials are missing.
+- Report command: `python -m pytest --alluredir=allure-results` and `allure generate allure-results --clean -o allure-report`.
+
+## Getting Started
+
+```text
+Kaio-QA-portfolio-playwright-AI-testing
+├── tests/                 # AI showcase and browser automation scenarios
+├── helpers/               # AI selector, data generation, and failure analysis support
+├── conftest.py            # pytest hooks and graceful skipping for missing credentials
+├── .github/workflows/     # CI for AI-backed automation and reporting
+├── requirements.txt       # Python dependency set
+├── .env.example           # API key and model configuration template
+├── pytest.ini             # pytest settings
+├── README.md              # setup and demonstration notes
+└── allure-results/        # generated evidence for report generation
+```
+
+This repository demonstrates how AI can augment an automation layer when the environment is configured correctly; the key design choice is to fail clearly when a required credential or model dependency is missing.
+
 ---
 
-## 📊 Project Status
+## 📊 Verified Evidence
 
-| Metric | Value |
-|--------|-------|
-| **Tests** | 19 passing |
-| **AI Features** | 5 core capabilities |
-| **Language** | Python 3.11+ |
-| **Framework** | Playwright 1.48 + Pytest 9.0 |
-| **AI Provider** | Groq (llama-3.3-70b-versatile) |
-| **Reports** | HTML + **Allure Report** |
+| Check | Result |
+|-------|--------|
+| **Type check** | `python -m mypy .` passed: no issues in 16 source files |
+| **Resilience suite** | `python -m pytest tests/test_ai_resilience.py -q` passed: 4/4 tests |
+| **Browser runtime** | Chromium is required for Playwright; AI showcase tests skip cleanly when unavailable |
+| **AI dependency** | Groq-backed features require `GROQ_API_KEY` and are skipped with a clear reason when unset |
+| **Reports** | Allure output is generated when the suite is run locally or in CI |
+
+**Known limitations:** this repo is intentionally structured as a showcase and a safety-first AI automation sandbox. The AI-powered features are optional and deterministic fallback behavior is preferred when credentials or browser dependencies are missing.
 
 ---
 
@@ -66,13 +93,14 @@ source .venv/bin/activate  # Linux/Mac
 # .venv\Scripts\activate  # Windows
 
 # 3. Install dependencies
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 
 # 4. Install Playwright browsers
-playwright install chromium
+python -m playwright install chromium
 
 # 5. Configure AI
-cp .env.example .env
+copy .env.example .env  # Windows
+# or: cp .env.example .env  # macOS/Linux
 # Edit .env and add your Groq API key
 ```
 
@@ -84,27 +112,27 @@ GROQ_MODEL=llama-3.3-70b-versatile
 
 ### Running Tests
 ```bash
-# Run all tests (19 tests, ~2 minutes)
-pytest -v
+# Run the repo's verified resilience checks
+python -m pytest tests/test_ai_resilience.py -q
+
+# Run the full suite when browser and Groq credentials are available
+python -m pytest -v
 
 # Run with verbose output
-pytest -v -s
+python -m pytest -v -s
 
-# Run specific AI feature demo
-pytest tests/test_ai_features_showcase.py -v -s
-
-# Run login tests with AI selectors
-pytest tests/test_saucedemo_login.py::TestSauceDemoLogin::test_ai_generated_login_selectors -v -s
-
-# Run shopping flow with AI-generated data
-pytest tests/test_saucedemo_shopping.py::TestSauceDemoShopping::test_complete_checkout_with_ai_generated_data -v -s
+# Run specific AI feature demo (requires GROQ_API_KEY)
+python -m pytest tests/test_ai_features_showcase.py -v -s
 
 # Run headed (visible browser)
-pytest --headed
+python -m pytest --headed
 
-# Run in specific browser
-pytest --browser=firefox
+# Run in a specific browser
+python -m pytest --browser=firefox
 ```
+
+> AI showcase tests are intentionally skipped with a clear message when `GROQ_API_KEY` is absent, and the browser install is not present. This keeps the repo honest and deterministic without hiding missing prerequisites.
+
 
 ---
 
@@ -130,11 +158,11 @@ Kaio-QA-portfolio-playwright-AI-testing/
 │   ├── failure_analyzer.py    # AI failure analysis & fix suggestions
 │   ├── visual_validator.py    # AI visual validation & accessibility
 │   └── smart_waits.py         # AI-powered wait strategies
-├── tests/                      # Test suites (19 tests total)
-│   ├── test_ai_features_showcase.py  # AI capabilities demonstration (5 tests)
-│   ├── test_saucedemo_login.py       # Login scenarios with AI (6 tests)
-│   ├── test_saucedemo_shopping.py    # E2E shopping flow with AI data (5 tests)
-│   └── test_example.py               # Basic examples + failure demo (4 tests)
+├── tests/                      # Test suites and AI demonstration coverage
+│   ├── test_ai_features_showcase.py  # AI showcase flows and skip behavior when credentials are missing
+│   ├── test_saucedemo_login.py       # Login scenarios with AI helpers
+│   ├── test_saucedemo_shopping.py    # E2E shopping flow with AI data
+│   └── test_example.py               # Basic examples + failure demo
 ├── conftest.py                 # Pytest hooks (auto AI analysis on failure)
 ├── pytest.ini                  # Pytest configuration
 ├── requirements.txt            # Dependencies

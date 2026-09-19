@@ -1,22 +1,31 @@
-import pytest
 import os
-from playwright.sync_api import Page
+
+import pytest
 from helpers.selector_generator import SelectorGenerator
+from helpers.smart_waits import SmartWaits
 from helpers.test_data_generator import TestDataGenerator
 from helpers.visual_validator import VisualValidator
-from helpers.smart_waits import SmartWaits
+from playwright.sync_api import Page
+
+BASE_URL = os.getenv('BASE_URL', 'https://www.saucedemo.com')
+DEFAULT_TIMEOUT_MS = int(os.getenv('AI_DEFAULT_TIMEOUT_MS', '10000'))
+AI_SELECTOR_TIMEOUT_MS = int(os.getenv('AI_SELECTOR_TIMEOUT_MS', '2000'))
+FALLBACK_LOGIN_SELECTOR = '[data-test="login-button"]'
 
 
 class TestAIFeaturesShowcase:
     """Showcase all AI-powered testing features"""
 
-    BASE_URL = 'https://www.saucedemo.com'
+    BASE_URL = BASE_URL
 
+    @pytest.mark.exploratory
     def _skip_if_no_groq(self):
         """Skip test if GROQ_API_KEY is not set"""
         if not os.getenv("GROQ_API_KEY"):
             pytest.skip("GROQ_API_KEY not set - skipping AI-powered test")
 
+    @pytest.mark.exploratory
+    @pytest.mark.requires_groq
     def test_ai_selector_generation_showcase(self, page: Page):
         """Demonstrate AI selector generation capabilities"""
         self._skip_if_no_groq()
@@ -40,6 +49,8 @@ class TestAIFeaturesShowcase:
 
         print('='*60 + '\n')
 
+    @pytest.mark.exploratory
+    @pytest.mark.requires_groq
     def test_ai_test_data_generation_showcase(self, page: Page):
         """Demonstrate AI test data generation"""
         self._skip_if_no_groq()
@@ -65,6 +76,8 @@ class TestAIFeaturesShowcase:
 
         print('='*60 + '\n')
 
+    @pytest.mark.exploratory
+    @pytest.mark.requires_groq
     def test_ai_visual_validation_showcase(self, page: Page):
         """Demonstrate AI visual validation"""
         self._skip_if_no_groq()
@@ -97,6 +110,8 @@ class TestAIFeaturesShowcase:
 
         print('='*60 + '\n')
 
+    @pytest.mark.exploratory
+    @pytest.mark.requires_groq
     def test_ai_smart_waits_showcase(self, page: Page):
         """Demonstrate AI-powered smart wait strategies"""
         self._skip_if_no_groq()
@@ -112,7 +127,7 @@ class TestAIFeaturesShowcase:
         smart_waits.wait_for_element_intelligently(
             page,
             'Login form to be fully loaded',
-            timeout=10000
+            timeout=DEFAULT_TIMEOUT_MS
         )
 
         # Show optimal timeout suggestions
@@ -124,6 +139,8 @@ class TestAIFeaturesShowcase:
 
         print('='*60 + '\n')
 
+    @pytest.mark.exploratory
+    @pytest.mark.requires_groq
     def test_ai_failure_recovery_showcase(self, page: Page):
         """Demonstrate AI-powered failure recovery"""
         self._skip_if_no_groq()
@@ -140,21 +157,20 @@ class TestAIFeaturesShowcase:
         print(f'\n  Attempting with AI selector: {ai_selector}')
 
         try:
-            page.click(ai_selector, timeout=2000)
+            page.click(ai_selector, timeout=AI_SELECTOR_TIMEOUT_MS)
             print('  ✅ AI selector worked!')
-        except Exception as e:
-            print(f'  ⚠️ AI selector failed: {str(e)[:50]}...')
+        except (AssertionError, TimeoutError, ValueError) as exc:
+            print(f'  ⚠️ AI selector failed: {str(exc)[:50]}...')
 
             # Use AI to suggest alternatives
-            alternatives = selector_gen.suggest_alternatives(ai_selector, str(e))
+            alternatives = selector_gen.suggest_alternatives(ai_selector, str(exc))
             print('\n  🤖 AI Suggested Alternatives:')
             for i, alt in enumerate(alternatives, 1):
                 print(f'    {i}. {alt}')
 
             # Try fallback
-            fallback = '[data-test="login-button"]'
-            print(f'\n  Using fallback: {fallback}')
-            page.click(fallback)
+            print(f'\n  Using fallback: {FALLBACK_LOGIN_SELECTOR}')
+            page.click(FALLBACK_LOGIN_SELECTOR)
             print('  ✅ Fallback worked!')
 
         print('='*60 + '\n')

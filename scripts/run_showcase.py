@@ -4,8 +4,8 @@ AI Testing Showcase Runner
 Runs all tests and generates a comprehensive report
 """
 
-from datetime import datetime
 import subprocess
+from datetime import datetime, timezone
 
 
 def print_banner(text):
@@ -19,7 +19,7 @@ def run_tests():
     """Run all test suites"""
     print_banner('🚀 PLAYWRIGHT AI TESTING FRAMEWORK SHOWCASE')
 
-    print(f'Started at: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}\n')
+    print(f'Started at: {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")}\n')
 
     test_suites = [
         ('AI Features Showcase', 'tests/test_ai_features_showcase.py'),
@@ -36,14 +36,15 @@ def run_tests():
             result = subprocess.run(
                 ['pytest', test_path, '-v', '-s'],
                 capture_output=False,
-                text=True
+                text=True,
+                check=False,
             )
 
             status = '✅ PASSED' if result.returncode == 0 else '❌ FAILED'
             results.append((suite_name, status))
 
-        except Exception as e:
-            print(f'Error running {suite_name}: {e}')
+        except OSError as exc:
+            print(f'Error running {suite_name}: {exc}')
             results.append((suite_name, '❌ ERROR'))
 
     # Print summary
@@ -52,7 +53,7 @@ def run_tests():
     for suite_name, status in results:
         print(f'  {status} - {suite_name}')
 
-    print(f'\nCompleted at: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
+    print(f'\nCompleted at: {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")}')
     print('\n' + '='*70 + '\n')
 
 
