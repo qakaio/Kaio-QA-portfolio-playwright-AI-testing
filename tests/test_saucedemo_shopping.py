@@ -28,7 +28,6 @@ class TestSauceDemoShopping:
 
     BASE_URL = os.getenv('BASE_URL', 'https://www.saucedemo.com')
 
-    @pytest.mark.functional
     @pytest.fixture(autouse=True)
     def login(self, page: Page):
         """Auto-login before each test"""
