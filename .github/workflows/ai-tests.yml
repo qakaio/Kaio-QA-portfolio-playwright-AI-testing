@@ -109,7 +109,6 @@ jobs:
         if: always()
         run: |
           allure generate allure-results --clean -o allure-report --name "Kaio-QA-portfolio-playwright-AI-testing - AI-Powered Playwright Tests"
-        env:
 
       - name: Deploy Allure Report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
